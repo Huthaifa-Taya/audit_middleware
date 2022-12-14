@@ -5,8 +5,7 @@ class AuditMiddleware
 
   def call(env)
     began_at = Time.now
-    status, headers, response = @app.call env
-    p "\n \n",headers.to_h,env['REMOTE_ADDR'],"\n \n"
+    # status, headers, response = @app.call env
     results = Geocoder.search(env['REMOTE_ADDR'].to_i)
     country = results&.first.country.to_s
     city = results&.first.city.to_s

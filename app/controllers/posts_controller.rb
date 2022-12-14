@@ -3,6 +3,7 @@ class PostsController < ApplicationController
 
   # GET /posts or /posts.json
   def index
+    @posts = Post.all
     require 'geocoder'
     # results = Geocoder.search
     puts "\n\n"
@@ -10,8 +11,15 @@ class PostsController < ApplicationController
     p Geocoder.methods
     puts "\n\n"
 
-    @posts = Post.all
-    end
+    require 'redis'
+    redis = Redis.new(host: "localhost")
+    redis.set("a", 1)
+    redis.rpush('array', [1,2,3,4,5])
+    a = redis.get("a")
+    b = redis.lrange('array', 0, -1)
+    p '*********************************************', a, b
+
+  end
 
   # GET /posts/1 or /posts/1.json
   def show
@@ -65,13 +73,14 @@ class PostsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_post
-      @post = Post.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def post_params
-      params.fetch(:post, {})
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_post
+    @post = Post.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def post_params
+    params.fetch(:post, {})
+  end
 end

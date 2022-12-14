@@ -72,3 +72,5 @@ group :test do
   gem "webdrivers"
 end
 
+
+gem "redis", "~> 5.0"
